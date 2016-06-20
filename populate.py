@@ -32,13 +32,36 @@ DB_USER = 'josh'
 DB_PASSWORD = ''
 
 START_DATE = date(1950, 1, 1)
-END_DATE = date(2050, 1, 1)
+END_DATE = date(2017, 1, 1)
 
 
 try:
     conn = psycopg2.connect(database=DB, user=DB_USER, password=DB_PASSWORD)
 except psycopg2.Error, e:
     print e
+
+
+def is_provincial(current_date):
+    pronvicial_dates = {
+        'wellington_anniversary': (1, 25),
+        'auckland_anniversary': (2, 1),
+        'nelson_anniversary': (2, 1),
+        'tarankai_anniversary': (3, 14),
+        'otago_anniversary': (3, 21),
+        'southland_anniversary': (3, 29),
+        'south_canterbury_anniversary': (9, 26),
+        'hawkes_bay_anniversary': (10, 21),
+        'marlborough_anniversary': (10, 31),
+        'canterbury_anniversary': (11, 11),
+        'westland_anniversary': (11, 28),
+        'chatham_islands_anniversary': (11, 28)
+    }
+    result = None
+    for p in pronvicial_dates.keys():
+        if pronvicial_dates[p][0] == current_date.month and pronvicial_dates[p][1] == current_date.day:
+            result = result or {}
+            result[p] = True
+    return result and {'provincial': result}
 
 
 def is_waitangi(current_date):
@@ -63,21 +86,29 @@ def is_xmas(current_date):
     if 5 <= jan_first.weekday() <= 6:
         end = next_weekday(end, 2)
 
+    if start <= current_date <= end:
+        return {'xmas': True}
+
 def is_queens_bday(current_date):
     # 1st monday in June
+    if current_date.month == 6 and current_date.weekday() == 0 and 1 <= current_date.day <= 7:
+        return {'queens_bday': True}
     return None
 
 def is_labour(current_date):
     # 4th monday in october
+    if current_date.month == 10 and current_date.weekday() == 0 and 22 <= current_date.day:
+        return {'labour': True}
     return None
 
 
 nz_holidays = {
     'waitangi': is_waitangi,
-    'is_anzac': is_anzac,
+    'anzac': is_anzac,
     'xmas': is_xmas,
     'queens_bday': is_queens_bday,
-    'labour_day': is_labour
+    'labour_day': is_labour,
+    'pronvincial': is_provincial
 }
 
 
