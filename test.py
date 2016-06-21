@@ -11,6 +11,7 @@ class TestPopulateDates(unittest.TestCase):
         cls.cur = cls.conn.cursor()
         init_db(cls.cur)
         populate(cls.cur)
+        cls.conn.commit()
 
     @classmethod
     def tearDownClass(cls):
@@ -29,6 +30,12 @@ class TestPopulateDates(unittest.TestCase):
                                'amount': 25,
                                'units': 'days',
                                'scheme': 'judicature'}), datetime.date(2016, 1, 27))
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2001-10-1',
+                               'amount': 10,
+                               'units': 'days',
+                               'scheme': 'judicature'}), datetime.date(2001, 10, 15))
+
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2015-12-01',
                                'amount': 1,

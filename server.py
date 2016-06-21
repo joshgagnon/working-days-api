@@ -1,7 +1,7 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from populate import get_connection
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
 
 
@@ -9,17 +9,21 @@ app = Flask(__name__)
 
 def calculate_period(cur, args):
     start_date = args['start_date']
-    amount = args['amount']
+    amount = int(args['amount'])
     amount += int(args.get('inclusion', 0))
     units = args.get('units')
     scheme = args['scheme']
     flags = [scheme]
+    direction = args.get('direction', 'postive')
+    #if direction == 'negative':
+    #    amount = -amount;
     if scheme == 'property':
         flags.append(args['region'])
     if units == 'days':
-        cur.execute("""SELECT working_days(%s::date, %s, %s::text[])""", (start_date, amount, flags))
+        target = start_date
+
     else:
-        target = datetime.strptime(start_date, "%Y-%m-%d")
+        target = datetime.strptime(start_date, "%Y-%m-%d").date()
         if units == 'weeks':
             delta = relativedelta(weeks=amount)
         elif units == 'fortnights':
@@ -28,7 +32,10 @@ def calculate_period(cur, args):
             delta = relativedelta(months=amount)
         elif units == 'years':
             delta = relativedelta(years=amount)
-        cur.execute("""SELECT working_days(%s::date, 0, %s::text[])""", (target + delta, flags))
+        amount = 0
+        target = target + delta
+
+    cur.execute("""SELECT working_days(%s::date, %s, %s::text[])""", (target, amount, flags))
 
     return cur.fetchone()[0]
 
@@ -44,11 +51,12 @@ def teardown_request(exception):
         g.db.close()
 
 @app.route("/")
+@app.route("/*")
 def working_days():
     try:
         with g.db.cursor() as cur:
-            return calculate_period(cur, request.args), 200
-    except:
+            return calculate_period(cur, request.args).strftime('%Y-%m-%d'), 200
+    except Exception, e:
         abort(400)
 
 
