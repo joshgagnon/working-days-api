@@ -1,9 +1,9 @@
-CREATE OR REPLACE FUNCTION stats(start_date date, end_date date, flags text[])
+CREATE OR REPLACE FUNCTION stats(start_date date, end_date date)
 RETURNS TABLE(count bigint, flag text)
 AS $$
 SELECT count(flag) as count, flag
 FROM
-(SELECT day, jsonb_object_keys(flags) as flag FROM holidays WHERE day >= $1 AND day <= $2 AND (flags ?| $3) ) q
+(SELECT day, jsonb_object_keys(flags) as flag FROM holidays WHERE day >= $1 AND day <= $2) q
 GROUP BY flag
 $$ LANGUAGE SQL;
 
@@ -11,7 +11,7 @@ CREATE OR REPLACE FUNCTION stats_json(start_date date, end_date date, flags text
 RETURNS JSON
 AS $$
 SELECT array_to_json(array_agg(row_to_json(q)))
-FROM (SELECT * FROM stats($1, $2, $3)) q
+FROM (SELECT * FROM stats($1, $2) s WHERE s.flag = ANY($3)) q
 $$ LANGUAGE SQL;
 
 

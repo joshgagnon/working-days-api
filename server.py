@@ -30,7 +30,7 @@ def calculate_period(cur, args):
     units = args.get('units')
     scheme = args['scheme']
     flags = SCHEME_FLAGS.get(scheme, [])
-    direction = args.get('direction', 'postive')
+    direction = args.get('direction', 'positive')
     if scheme == 'property':
         flags.append(args['region'])
     target = datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -58,6 +58,10 @@ def calculate_period(cur, args):
 
     cur.execute("""SELECT working_days(%s::date, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
     result = cur.fetchone()[0]
+    end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
+    start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+    result['days_count'] = (end_date- start_date).days
+
     return result
 
 @app.before_request
@@ -77,7 +81,7 @@ def teardown_request(exception):
 def working_days():
     try:
         with g.db.cursor() as cur:
-            return jsonify({'result': calculate_period(cur, request.args).strftime('%Y-%m-%d')}), 200
+            return jsonify(calculate_period(cur, request.args)), 200
     except Exception, e:
         print e
         abort(400)
