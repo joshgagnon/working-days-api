@@ -60,6 +60,7 @@ def calculate_period(cur, args):
         cur.execute("""SELECT working_days_stats(%s::date, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
     else:
         cur.execute("""SELECT working_days(%s::date, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
+
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
