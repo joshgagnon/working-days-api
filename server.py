@@ -1,29 +1,50 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, jsonify
 from populate import get_connection
 from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
+from flask.ext.cors import CORS, cross_origin
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+judicature_holiday = ['weekend', 'easter', 'judiciature_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
+interpretation_holiday = ['weekend', 'easter', 'interpretation_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
+property_holiday = ['weekend', 'easter', 'property_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour' ]
+
+SCHEME_FLAGS = {
+    'judicature': judicature_holiday,
+    'interpretation': interpretation_holiday,
+    'property': property_holiday
+}
+
 
 def calculate_period(cur, args):
     start_date = args['start_date']
+
+    offset = int(args.get('inclusion', 0))
     amount = int(args['amount'])
-    amount += int(args.get('inclusion', 0))
     units = args.get('units')
     scheme = args['scheme']
-    flags = [scheme]
+    flags = SCHEME_FLAGS.get(scheme, [])
     direction = args.get('direction', 'postive')
-    #if direction == 'negative':
-    #    amount = -amount;
     if scheme == 'property':
         flags.append(args['region'])
-    if units == 'days':
-        target = start_date
+    target = datetime.strptime(start_date, "%Y-%m-%d").date()
+
+    target += relativedelta(days=offset)
+
+    if units == 'working_days':
+        pass
 
     else:
-        target = datetime.strptime(start_date, "%Y-%m-%d").date()
+        if direction == 'negative':
+            amount = -amount
+        if units == 'days':
+            delta = relativedelta(days=amount)
         if units == 'weeks':
             delta = relativedelta(weeks=amount)
         elif units == 'fortnights':
@@ -35,9 +56,9 @@ def calculate_period(cur, args):
         amount = 0
         target = target + delta
 
-    cur.execute("""SELECT working_days(%s::date, %s, %s::text[])""", (target, amount, flags))
-
-    return cur.fetchone()[0]
+    cur.execute("""SELECT working_days(%s::date, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
+    result = cur.fetchone()[0]
+    return result
 
 @app.before_request
 def before_request():
@@ -52,11 +73,13 @@ def teardown_request(exception):
 
 @app.route("/")
 @app.route("/*")
+@cross_origin()
 def working_days():
     try:
         with g.db.cursor() as cur:
-            return calculate_period(cur, request.args).strftime('%Y-%m-%d'), 200
+            return jsonify({'result': calculate_period(cur, request.args).strftime('%Y-%m-%d')}), 200
     except Exception, e:
+        print e
         abort(400)
 
 

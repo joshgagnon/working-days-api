@@ -10,6 +10,7 @@ setup(name='working-days-api',
      # packages=['template-law-odf'],
       install_requires=[
           'flask',
+          'flask-cors',
           'psycopg2',
           'python-dateutil'
       ],

@@ -58,9 +58,9 @@ def init_db(cur):
 
 def populate(cur):
     print('%s to %s' % (START_DATE, END_DATE))
-    args = [(x[0], Json(x[1]), Json(x[2])) for x in calculate_dates()]
+    args = [(x[0], Json(x[1])) for x in calculate_dates()]
     records_list_template = ','.join(['%s'] * len(args))
-    insert = 'INSERT INTO holidays (day, flags, summary_flags) values {0}'.format(records_list_template)
+    insert = 'INSERT INTO holidays (day, flags) values {0}'.format(records_list_template)
     cur.execute(cur.mogrify(insert, args))
     print('Inserted %d dates' % len(args))
 
@@ -70,7 +70,7 @@ def is_provincial(current_date):
         'wellington_anniversary': (1, 25),
         'auckland_anniversary': (2, 1),
         'nelson_anniversary': (2, 1),
-        'tarankai_anniversary': (3, 14),
+        'taranaki_anniversary': (3, 14),
         'otago_anniversary': (3, 21),
         'southland_anniversary': (3, 29),
         'south_canterbury_anniversary': (9, 26),
@@ -85,7 +85,7 @@ def is_provincial(current_date):
         if pronvicial_dates[p][0] == current_date.month and pronvicial_dates[p][1] == current_date.day:
             result = result or {}
             result[p] = True
-    return result and {'provincial': result}
+    return result
 
 
 def is_waitangi(current_date):
@@ -94,7 +94,7 @@ def is_waitangi(current_date):
     if current_date == waitangi_day:
         return {'waitangi': True}
     if current_date == monday_ize(waitangi_day):
-        return {'waitangi': True, 'mondayized': True}
+        return {'waitangi': True, 'waitangi_mondayized': True}
 
 
 def is_anzac(current_date):
@@ -103,7 +103,7 @@ def is_anzac(current_date):
     if current_date == anzac_day:
         return {'anzac': True}
     if current_date == monday_ize(anzac_day):
-        return {'anzac': True, 'mondayized': True}
+        return {'anzac': True, 'anzac_mondayized': True}
 
 
 def is_xmas(current_date):
@@ -123,7 +123,7 @@ def is_judicature_act_holiday(current_date):
 def is_intepretation_act_holiday(current_date):
     start = date(current_date.year, 12, 25)
     end = date(current_date.year, 1, 2)
-    jan_first = end = date(current_date.year + 1, 1, 1)
+    jan_first = end = date(current_date.year, 1, 1)
     # if friday, next monday
     if jan_first.weekday() == 4:
          end = end + timedelta(3)
@@ -131,8 +131,8 @@ def is_intepretation_act_holiday(current_date):
     if 5 <= jan_first.weekday() <= 6:
         end = next_weekday(end, 2)
 
-    if start >= current_date  or current_date <= end:
-        return {'interpretation_act_holiday': True, 'companies_act_holiday': True}
+    if current_date >= start or current_date <= end:
+        return {'interpretation_act_holiday': True, 'companies_act_holiday': True, 'property_act_holiday': True}
 
 
 def is_queens_bday(current_date):
@@ -198,16 +198,7 @@ holiday_tests = {
 def calculate_dates():
     for day in daterange(START_DATE, END_DATE):
         flags = merge_dicts([holiday_tests[h](day) for h in holiday_tests.keys()])
-        summary = {}
-        if flags.get('provincial'):
-            summary.update(flags.get('provincial'))
-        judicature_holiday = ['weekend', 'easter', 'judiciature_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
-        interpretation_holiday = ['weekend', 'easter', 'interpretation_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
-        if any([flags.get(s) for s in judicature_holiday]):
-            summary['judicature'] = True
-        if any([flags.get(s) for s in interpretation_holiday]):
-            summary['interpretation'] = True
-        yield (day, flags, summary)
+        yield (day, flags)
 
 
 if __name__ == "__main__":
