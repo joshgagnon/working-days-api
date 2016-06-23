@@ -61,7 +61,6 @@ def calculate_period(cur, args):
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
     result['days_count'] = (end_date- start_date).days
-    print cur.query
     return result
 
 @app.before_request
@@ -83,7 +82,6 @@ def working_days():
         with g.db.cursor() as cur:
             return jsonify(calculate_period(cur, request.args)), 200
     except Exception, e:
-        print e
         abort(400)
 
 
