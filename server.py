@@ -13,7 +13,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 judicature_holiday = ['weekend', 'easter', 'judicature_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
 interpretation_holiday = ['weekend', 'easter', 'interpretation_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
-property_holiday = ['weekend', 'easter', 'property_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour' ]
+property_holiday = ['weekend', 'easter', 'property_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
 
 SCHEME_FLAGS = {
     'judicature': judicature_holiday,
@@ -24,7 +24,6 @@ SCHEME_FLAGS = {
 
 def calculate_period(cur, args):
     start_date = args['start_date']
-
     offset = int(args.get('inclusion', 0))
     amount = int(args['amount'])
     units = args.get('units')
@@ -64,8 +63,9 @@ def calculate_period(cur, args):
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-    result['days_count'] = (end_date- start_date).days
+    result['days_count'] = (end_date - start_date).days
     return result
+
 
 @app.before_request
 def before_request():
