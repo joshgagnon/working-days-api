@@ -91,19 +91,19 @@ def is_provincial(current_date):
 def is_waitangi(current_date):
     # Feburary 6
     waitangi_day = date(current_date.year, 2, 6)
-    if current_date == waitangi_day:
-        return {'waitangi': True}
-    if current_date == monday_ize(waitangi_day):
+    if current_date == monday_ize(waitangi_day) and monday_ize(waitangi_day) != waitangi_day:
         return {'waitangi': True, 'waitangi_mondayized': True}
+    if current_date == monday_ize(waitangi_day):
+        return {'waitangi': True}
 
 
 def is_anzac(current_date):
     # April 25
     anzac_day = date(current_date.year, 4, 25)
-    if current_date == anzac_day:
-        return {'anzac': True}
-    if current_date == monday_ize(anzac_day):
+    if current_date == monday_ize(anzac_day) and monday_ize(anzac_day) != anzac_day:
         return {'anzac': True, 'anzac_mondayized': True}
+    if current_date == monday_ize(anzac_day) :
+        return {'anzac': True}
 
 
 def is_xmas(current_date):

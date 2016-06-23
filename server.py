@@ -86,6 +86,7 @@ def working_days():
         with g.db.cursor() as cur:
             return jsonify(calculate_period(cur, request.args)), 200
     except Exception, e:
+        print e
         abort(400)
 
 
