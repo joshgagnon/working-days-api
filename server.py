@@ -11,7 +11,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-judicature_holiday = ['weekend', 'easter', 'judiciature_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
+judicature_holiday = ['weekend', 'easter', 'judicature_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
 interpretation_holiday = ['weekend', 'easter', 'interpretation_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
 property_holiday = ['weekend', 'easter', 'property_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour' ]
 

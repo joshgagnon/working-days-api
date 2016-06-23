@@ -117,7 +117,7 @@ def is_xmas(current_date):
 def is_judicature_act_holiday(current_date):
     if (current_date.month == 12 and current_date.day >= 25) or \
         (current_date.month == 1 and current_date.day <= 15):
-        return {'judiciature_act_holiday': True}
+        return {'judicature_act_holiday': True}
 
 
 def is_intepretation_act_holiday(current_date):
