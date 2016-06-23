@@ -61,7 +61,7 @@ def calculate_period(cur, args):
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
     result['days_count'] = (end_date- start_date).days
-
+    print cur.query
     return result
 
 @app.before_request
