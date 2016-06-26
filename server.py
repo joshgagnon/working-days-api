@@ -11,14 +11,34 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-judicature_holiday = ['weekend', 'easter', 'judicature_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
-interpretation_holiday = ['weekend', 'easter', 'interpretation_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
-property_holiday = ['weekend', 'easter', 'property_act_holiday', 'waitangi', 'anzac', 'queens_bday', 'labour']
+judicature_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+interpretation_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
+companies_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
+property_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
+agreement_sale_purchase_real_estate = ['weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+income_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+goods_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+credit_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
+personal_property = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
+personal_property_special = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+land_transfer = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'queens_bday', 'labour']
+holidays_act = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'queens_bday', 'labour']
 
 SCHEME_FLAGS = {
-    'judicature': judicature_holiday,
+    'district_court': judicature_holiday,
+    'high_court': judicature_holiday,
+    'court_of_appeal': judicature_holiday,
+    'companies': companies_holiday,
     'interpretation': interpretation_holiday,
-    'property': property_holiday
+    'property': property_holiday,
+    'income': income_holiday,
+    'goods_services': goods_holiday,
+    'credit_contracts': credit_holiday,
+    'personal_property': personal_property,
+    'personal_property_special': personal_property_special,
+    'land_transfer': land_transfer,
+    'holidays': holidays_act,
+    'agreement_sale_purchase_real_estate': agreement_sale_purchase_real_estate,
 }
 
 
@@ -30,7 +50,7 @@ def calculate_period(cur, args):
     scheme = args['scheme']
     flags = SCHEME_FLAGS.get(scheme, [])
     direction = args.get('direction', 'positive')
-    if scheme == 'property':
+    if scheme in ['property', 'land_transfer', 'holidays']:
         flags.append(args['region'])
     target = datetime.strptime(start_date, "%Y-%m-%d").date()
 

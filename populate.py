@@ -107,20 +107,35 @@ def is_anzac(current_date):
 
 
 def is_xmas(current_date):
+    if current_date.month == 12 and current_date.day == 24:
+        return {'xmas_eve': True}
+
     if current_date.month == 12 and current_date.day == 25:
         return {'xmas': True}
 
     if current_date.month == 12 and current_date.day == 26:
         return {'boxing': True}
 
+    if current_date.month == 1 and current_date.day == 1:
+        return {'new_year': True}
 
-def is_judicature_act_holiday(current_date):
+    if current_date.month == 1 and current_date.day == 1:
+        return {'second_jan': True}
+
+
+def is_xmas_ending_15th_holiday(current_date):
     if (current_date.month == 12 and current_date.day >= 25) or \
         (current_date.month == 1 and current_date.day <= 15):
-        return {'judicature_act_holiday': True}
+        return {'xmas_ending_15th': True}
 
 
-def is_intepretation_act_holiday(current_date):
+def is_xmas_ending_5th_holiday(current_date):
+    if (current_date.month == 12 and current_date.day >= 25) or \
+        (current_date.month == 1 and current_date.day <= 5):
+        return {'xmas_ending_5th': True}
+
+
+def is_xmas_ending_2nd_holiday(current_date):
     start = date(current_date.year, 12, 25)
     end = date(current_date.year, 1, 2)
     jan_first = end = date(current_date.year, 1, 1)
@@ -132,7 +147,7 @@ def is_intepretation_act_holiday(current_date):
         end = next_weekday(end, 2)
 
     if current_date >= start or current_date <= end:
-        return {'interpretation_act_holiday': True, 'companies_act_holiday': True, 'property_act_holiday': True}
+        return {'xmas_ending_2nd': True, 'xmas_ending_2nd': True, 'xmas_ending_2nd': True}
 
 
 def is_queens_bday(current_date):
@@ -155,8 +170,9 @@ nz_holidays = {
     'xmas': is_xmas,
     'queens_bday': is_queens_bday,
     'labour': is_labour,
-    'judicature': is_judicature_act_holiday,
-    'interpretation': is_intepretation_act_holiday,
+    'xmas_ending_2nd': is_xmas_ending_2nd_holiday,
+    'xmas_ending_15th': is_xmas_ending_15th_holiday,
+    'xmas_ending_5th': is_xmas_ending_5th_holiday,
     'pronvincial': is_provincial
 }
 

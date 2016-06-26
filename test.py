@@ -23,8 +23,7 @@ class TestPopulateDates(unittest.TestCase):
     def test_xmas(self):
         self.cur.execute("""SELECT flags FROM holidays WHERE day = '2015-12-25'::date """)
         result = self.cur.fetchone()[0]
-        self.assertEqual(result['interpretation_act_holiday'], True)
-        self.assertEqual(result['interpretation_act_holiday'], True)
+        self.assertEqual(result['xmas_ending_2nd'], True)
 
     def test_query(self):
         self.assertEqual(calculate_period(self.cur, {
@@ -32,32 +31,32 @@ class TestPopulateDates(unittest.TestCase):
                                'amount': 25,
                                'units': 'working_days',
                                'direction': 'positive',
-                               'scheme': 'judicature'})['result'], '2016-01-27')
+                               'scheme': 'high_court'})['result'], '2016-01-27')
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2001-10-1',
                                'amount': 10,
                                'units': 'working_days',
                                'direction': 'positive',
-                               'scheme': 'judicature'})['result'], '2001-10-15')
+                               'scheme': 'high_court'})['result'], '2001-10-15')
 
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2015-12-01',
                                'amount': 1,
                                'units': 'weeks',
                                'direction': 'positive',
-                               'scheme': 'judicature'})['result'], '2015-12-08')
+                               'scheme': 'high_court'})['result'], '2015-12-08')
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2015-12-01',
                                'amount': 1,
                                'units': 'months',
                                'direction': 'positive',
-                               'scheme': 'judicature'})['result'], '2016-01-18')
+                               'scheme': 'high_court'})['result'], '2016-01-18')
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2015-12-01',
                                'amount': 2,
                                'units': 'years',
                                'direction': 'positive',
-                               'scheme': 'judicature'})['result'], '2017-12-01')
+                               'scheme': 'high_court'})['result'], '2017-12-01')
 
 
 if __name__ == '__main__':
