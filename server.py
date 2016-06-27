@@ -22,7 +22,7 @@ credit_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', '
 personal_property = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
 personal_property_special = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
 land_transfer = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'queens_bday', 'labour']
-holidays_act = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'queens_bday', 'labour']
+resource_management = ['weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'queens_bday', 'labour']
 
 SCHEME_FLAGS = {
     'district_court': judicature_holiday,
@@ -37,8 +37,8 @@ SCHEME_FLAGS = {
     'personal_property': personal_property,
     'personal_property_special': personal_property_special,
     'land_transfer': land_transfer,
-    'holidays': holidays_act,
     'agreement_sale_purchase_real_estate': agreement_sale_purchase_real_estate,
+    'resource_management': resource_management
 }
 
 

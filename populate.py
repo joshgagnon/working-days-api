@@ -135,6 +135,13 @@ def is_xmas_ending_5th_holiday(current_date):
         return {'xmas_ending_5th': True}
 
 
+def is_xmas_ending_10th_holiday(current_date):
+    if (current_date.month == 12 and current_date.day >= 20) or \
+        (current_date.month == 1 and current_date.day <= 10):
+        return {'xmas_starting_20th_ending_10th': True}
+
+
+
 def is_xmas_ending_2nd_holiday(current_date):
     start = date(current_date.year, 12, 25)
     end = date(current_date.year, 1, 2)
@@ -173,6 +180,7 @@ nz_holidays = {
     'xmas_ending_2nd': is_xmas_ending_2nd_holiday,
     'xmas_ending_15th': is_xmas_ending_15th_holiday,
     'xmas_ending_5th': is_xmas_ending_5th_holiday,
+    'xmas_starting_20th_ending_10th': is_xmas_ending_10th_holiday,
     'pronvincial': is_provincial
 }
 
