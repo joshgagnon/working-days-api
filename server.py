@@ -48,7 +48,7 @@ def calculate_period(cur, args):
     amount = int(args['amount'])
     units = args.get('units')
     scheme = args['scheme']
-    flags = SCHEME_FLAGS.get(scheme, [])
+    flags = SCHEME_FLAGS.get(scheme, [])[:]
     direction = args.get('direction', 'positive')
     if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
         flags.append(args['region'])
