@@ -11,23 +11,26 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-judicature_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-interpretation_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
-companies_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
-property_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
-agreement_sale_purchase_real_estate = ['weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-income_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-goods_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-credit_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
-personal_property = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'queens_bday', 'labour']
-personal_property_special = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-land_transfer = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'queens_bday', 'labour']
-resource_management = ['weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+judicature_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+appeal_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+supreme_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour', 'wellington_anniversary']
+interpretation_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+companies_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+property_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+agreement_sale_purchase_real_estate = ['weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+income_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+goods_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+credit_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+personal_property = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+personal_property_special = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+land_transfer = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+resource_management = ['weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
 SCHEME_FLAGS = {
     'district_court': judicature_holiday,
     'high_court': judicature_holiday,
-    'court_of_appeal': judicature_holiday,
+    'court_of_appeal': appeal_holiday,
+    'supreme_court': supreme_holiday,
     'companies': companies_holiday,
     'interpretation': interpretation_holiday,
     'property': property_holiday,
