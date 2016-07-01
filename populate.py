@@ -92,7 +92,6 @@ def is_waitangi(current_date):
     # Feburary 6
     waitangi_day = date(current_date.year, 2, 6)
     if current_date == monday_ize(waitangi_day) and monday_ize(waitangi_day) != waitangi_day:
-        print(current_date)
         return {'waitangi_mondayized': True}
     if current_date == waitangi_day:
         return {'waitangi': True}
