@@ -92,8 +92,9 @@ def is_waitangi(current_date):
     # Feburary 6
     waitangi_day = date(current_date.year, 2, 6)
     if current_date == monday_ize(waitangi_day) and monday_ize(waitangi_day) != waitangi_day:
+        print(current_date)
         return {'waitangi_mondayized': True}
-    if current_date == monday_ize(waitangi_day):
+    if current_date == waitangi_day:
         return {'waitangi': True}
 
 
@@ -102,7 +103,7 @@ def is_anzac(current_date):
     anzac_day = date(current_date.year, 4, 25)
     if current_date == monday_ize(anzac_day) and monday_ize(anzac_day) != anzac_day:
         return {'anzac_mondayized': True}
-    if current_date == monday_ize(anzac_day) :
+    if current_date == anzac_day:
         return {'anzac': True}
 
 
