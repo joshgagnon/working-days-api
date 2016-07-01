@@ -41,3 +41,15 @@ CREATE OR REPLACE FUNCTION working_days_stats(start date, count integer, flags t
             OFFSET count
             LIMIT 1 ) q
     $$ LANGUAGE SQL;
+
+
+
+
+CREATE OR REPLACE FUNCTION get_holidays()
+    RETURNS JSON
+    AS $$
+    SELECT array_to_json(array_agg(row_to_json(q))) as holidays
+    FROM
+    (SELECT * from holidays where day >= (now() - interval '10 years') and day <= (now() + interval '10 years') AND flags<>'{}'::JSONB) q
+    $$ LANGUAGE SQL;
+

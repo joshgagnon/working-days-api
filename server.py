@@ -26,6 +26,7 @@ personal_property_special = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi'
 land_transfer = ['weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 resource_management = ['weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
+
 SCHEME_FLAGS = {
     'district_court': judicature_holiday,
     'high_court': judicature_holiday,
@@ -61,7 +62,6 @@ def calculate_period(cur, args):
 
     if units == 'working_days':
         pass
-
     else:
         if direction == 'negative':
             amount = -amount
@@ -89,6 +89,10 @@ def calculate_period(cur, args):
     result['days_count'] = (end_date - start_date).days
     return result
 
+def get_holidays(cur):
+    cur.execute("""SELECT get_holidays() as holidays """)
+    return {'holidays': cur.fetchone()[0]}
+
 
 @app.before_request
 def before_request():
@@ -101,6 +105,16 @@ def teardown_request(exception):
     if hasattr(g, 'db'):
         g.db.close()
 
+@app.route("/get_holidays")
+@cross_origin()
+def get_holdiays():
+    try:
+        with g.db.cursor() as cur:
+            return jsonify(get_holidays(cur)), 200
+    except Exception, e:
+        print e
+        abort(400)
+
 @app.route("/")
 @app.route("/*")
 @cross_origin()
@@ -111,6 +125,7 @@ def working_days():
     except Exception, e:
         print e
         abort(400)
+
 
 
 
