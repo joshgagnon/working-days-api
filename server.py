@@ -12,6 +12,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 judicature_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+judicature_holiday_no_mondayize = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
 appeal_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
 supreme_holiday = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour', 'wellington_anniversary']
 interpretation_holiday = ['weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
@@ -30,6 +31,7 @@ resource_management = ['weekend', 'easter', 'xmas_starting_20th_ending_10th', 'w
 SCHEME_FLAGS = {
     'district_court': judicature_holiday,
     'high_court': judicature_holiday,
+    'high_court_special': judicature_holiday_no_mondayize,
     'court_of_appeal': appeal_holiday,
     'supreme_court': supreme_holiday,
     'companies': companies_holiday,

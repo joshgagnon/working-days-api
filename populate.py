@@ -48,7 +48,6 @@ def get_connection():
     return conn
 
 
-
 def init_db(cur):
     with open('tables.sql') as tables:
         cur.execute(tables.read())
