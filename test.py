@@ -51,6 +51,7 @@ class TestPopulateDates(unittest.TestCase):
                                'units': 'months',
                                'direction': 'positive',
                                'scheme': 'high_court'})['result'], '2016-01-18')
+
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2015-12-01',
                                'amount': 2,
@@ -64,6 +65,41 @@ class TestPopulateDates(unittest.TestCase):
                                'units': 'working_days',
                                'direction': 'positive',
                                'scheme': 'high_court'})['result'], '2016-10-07')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-11',
+                               'amount': 1,
+                               'units': 'working_days',
+                               'direction': 'negative',
+                               'scheme': 'high_court'})['result'], '2016-09-09')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-11',
+                               'amount': 1,
+                               'units': 'days',
+                               'direction': 'negative',
+                               'scheme': 'high_court'})['result'], '2016-09-09')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-11',
+                               'amount': 2,
+                               'units': 'days',
+                               'direction': 'negative',
+                               'scheme': 'high_court'})['result'], '2016-09-09')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-11',
+                               'amount': 1,
+                               'units': 'weeks',
+                               'direction': 'negative',
+                               'scheme': 'high_court'})['result'], '2016-09-02')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-11',
+                               'amount': 1,
+                               'units': 'weeks',
+                               'direction': 'positive',
+                               'scheme': 'high_court'})['result'], '2016-09-19')
 
 if __name__ == '__main__':
     unittest.main()

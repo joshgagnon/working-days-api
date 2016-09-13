@@ -63,28 +63,13 @@ def calculate_period(cur, args):
     target += relativedelta(days=offset)
 
     if units == 'working_days':
-        pass
-    else:
-        if direction == 'negative':
-            amount = -amount
-        if units == 'days':
-            delta = relativedelta(days=amount)
-        if units == 'weeks':
-            delta = relativedelta(weeks=amount)
-        elif units == 'fortnights':
-            delta = relativedelta(weeks=amount * 2)
-        elif units == 'months':
-            delta = relativedelta(months=amount)
-        elif units == 'years':
-            delta = relativedelta(years=amount)
-        amount = 0
-        target = target + delta
-
-    if units == 'working_days':
         cur.execute("""SELECT working_day_offset(%s, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
     else:
-        cur.execute("""SELECT day_offset(%s, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
-
+        if units == 'fortnights':
+            units = 'weeks'
+            amount *= 2
+        cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", (target, '%s %s' % (amount, units), flags, direction == 'positive'))
+    print cur.query
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()

@@ -16,20 +16,18 @@ CREATE OR REPLACE FUNCTION stats_json(start_date date, end_date date, flags text
     $$ LANGUAGE SQL;
 
 
-CREATE OR REPLACE FUNCTION day_offset(start date, count integer, amount text, units flags text[], forward boolean default true)
+CREATE OR REPLACE FUNCTION day_offset(start date, interval, flags text[], forward boolean default true)
     RETURNS JSON
     AS $$
     SELECT json_build_object('result', day)
     FROM (
         SELECT day FROM holidays
-            WHERE ((forward and day >= (start + interval amount) or (not forward and day <= start)) AND (NOT (flags ?| $3) or start = day)
+            WHERE ((forward and day >= (start + $2)) or (not forward and day <= start - $2)) AND (NOT (flags ?| $3) or start = day)
             ORDER BY CASE forward WHEN true THEN day END asc, CASE forward WHEN false THEN day END desc
-            OFFSET count
             LIMIT 1 ) q
     $$ LANGUAGE SQL;
 
 
--- includes start date
 CREATE OR REPLACE FUNCTION working_day_offset(start date, count integer, flags text[], forward boolean default true)
     RETURNS JSON
     AS $$
@@ -41,7 +39,6 @@ CREATE OR REPLACE FUNCTION working_day_offset(start date, count integer, flags t
             OFFSET count
             LIMIT 1 ) q
     $$ LANGUAGE SQL;
-
 
 
 
