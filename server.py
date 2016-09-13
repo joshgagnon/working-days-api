@@ -81,9 +81,9 @@ def calculate_period(cur, args):
         target = target + delta
 
     if units == 'working_days':
-        cur.execute("""SELECT working_days_stats(%s::date, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
+        cur.execute("""SELECT working_day_offset(%s, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
     else:
-        cur.execute("""SELECT working_days(%s::date, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
+        cur.execute("""SELECT day_offset(%s, %s, %s::text[], %s)""", (target, amount, flags, direction == 'positive'))
 
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
