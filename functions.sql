@@ -1,3 +1,13 @@
+CREATE OR REPLACE FUNCTION array_intersect(anyarray, anyarray)
+  RETURNS anyarray
+  AS $$
+        SELECT ARRAY(
+            SELECT UNNEST($1)
+            INTERSECT
+            SELECT UNNEST($2)
+        )
+    $$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION stats(start_date date, end_date date)
     RETURNS TABLE(count bigint, flag text)
     AS $$
@@ -6,6 +16,19 @@ CREATE OR REPLACE FUNCTION stats(start_date date, end_date date)
         (SELECT day, jsonb_object_keys(flags) as flag FROM holidays WHERE day >= $1 AND day <= $2) q
     GROUP BY flag
     $$ LANGUAGE SQL;
+
+
+CREATE OR REPLACE FUNCTION holiday_range_json(start_date date, end_date date, flags text[])
+    RETURNS JSON
+    AS $$
+    SELECT array_to_json(array_agg(row_to_json(q)))
+    FROM (
+        SELECT day, array_intersect(ARRAY(SELECT jsonb_object_keys(h.flags)), $3) as flags
+        FROM holidays h WHERE day >= $1 AND day <= $2
+        ) q
+    WHERE array_length(q.flags, 1) > 0
+    $$ LANGUAGE SQL;
+
 
 CREATE OR REPLACE FUNCTION stats_json(start_date date, end_date date, flags text[])
     RETURNS JSON
@@ -19,7 +42,10 @@ CREATE OR REPLACE FUNCTION stats_json(start_date date, end_date date, flags text
 CREATE OR REPLACE FUNCTION day_offset(start date, interval, flags text[], forward boolean default true)
     RETURNS JSON
     AS $$
-    SELECT json_build_object('result', day)
+    SELECT json_build_object('result', day,
+                             'stats', (CASE forward WHEN true THEN stats_json($1, day, $3) ELSE stats_json(day, $1, $3) END),
+                             'range', (CASE forward WHEN true THEN holiday_range_json($1, day, $3) ELSE holiday_range_json(day, $1, $3) END)
+                             )
     FROM (
         SELECT day FROM holidays
             WHERE ((forward and day >= (start + $2)) or (not forward and day <= start - $2)) AND (NOT (flags ?| $3) or start = day)
@@ -31,7 +57,10 @@ CREATE OR REPLACE FUNCTION day_offset(start date, interval, flags text[], forwar
 CREATE OR REPLACE FUNCTION working_day_offset(start date, count integer, flags text[], forward boolean default true)
     RETURNS JSON
     AS $$
-    SELECT json_build_object('result', day, 'stats', (CASE forward WHEN true THEN stats_json($1, day, $3) ELSE stats_json(day, $1, $3) END))
+    SELECT json_build_object('result', day,
+                             'stats', (CASE forward WHEN true THEN stats_json($1, day, $3) ELSE stats_json(day, $1, $3) END),
+                             'range', (CASE forward WHEN true THEN holiday_range_json($1, day, $3) ELSE holiday_range_json(day, $1, $3) END)
+                             )
     FROM (
         SELECT day FROM holidays
             WHERE ((forward and day >= start) or (not forward and day <= start)) AND (NOT (flags ?| $3) or start = day)

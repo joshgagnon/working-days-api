@@ -150,10 +150,10 @@ def is_xmas_ending_2nd_holiday(current_date):
          end = end + timedelta(3)
     # if sat or sun, then next tuesday
     if 5 <= jan_first.weekday() <= 6:
-        end = next_weekday(end, 2)
+        end = next_weekday(end, 1)
 
     if current_date >= start or current_date <= end:
-        return {'xmas_ending_2nd': True, 'xmas_ending_2nd': True, 'xmas_ending_2nd': True}
+        return {'xmas_ending_2nd': True}
 
 
 def is_queens_bday(current_date):

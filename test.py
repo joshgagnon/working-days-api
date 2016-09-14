@@ -101,5 +101,42 @@ class TestPopulateDates(unittest.TestCase):
                                'direction': 'positive',
                                'scheme': 'high_court'})['result'], '2016-09-19')
 
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-11',
+                               'amount': 1,
+                               'units': 'weeks',
+                               'direction': 'negative',
+                               'scheme': 'high_court'})['result'], '2016-09-02')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-17',
+                               'amount': 30,
+                               'units': 'working_days',
+                               'direction': 'positive',
+                               'scheme': 'companies'})['result'], '2016-10-31')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-09-17',
+                               'amount': 30,
+                               'units': 'working_days',
+                               'direction': 'negative',
+                               'scheme': 'companies'})['result'], '2016-08-08')
+
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-10-01',
+                               'amount': 20,
+                               'units': 'working_days',
+                               'direction': 'positive',
+                               'scheme': 'companies'})['result'], '2016-10-31')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2016-12-03',
+                               'amount': 30,
+                               'units': 'working_days',
+                               'direction': 'positive',
+                               'scheme': 'companies'})['result'], '2017-01-24')
+
+
 if __name__ == '__main__':
     unittest.main()
