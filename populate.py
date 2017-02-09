@@ -89,10 +89,9 @@ def is_provincial(current_date):
         'chatham_islands_anniversary': is_chatham_islands_anniversary
     }
     result = None
-    #for p in pronvicial_dates.keys():
-    #    if pronvicial_dates[p][0] == current_date.month and pronvicial_dates[p][1] == current_date.day:
-    #        result = result or {}
-    #        result[p] = True
+
+    for p in pronvicial_dates.keys():
+        result = merge_dicts([result, pronvicial_dates[p](current_date)])
     return result
 
 

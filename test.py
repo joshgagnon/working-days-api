@@ -1,7 +1,7 @@
 import unittest
 from populate import get_connection, init_db, populate, is_wellington_anniversary, is_auckland_anniversary, is_nelson_anniversary, \
  is_otago_anniversary, is_westland_anniversary, is_chatham_islands_anniversary, is_taranaki_anniversary, is_southland_anniversary, \
-  is_south_canterbury_anniversary, is_hawkes_bay_anniversary, is_marlborough_anniversary, is_canterbury_anniversary
+  is_south_canterbury_anniversary, is_hawkes_bay_anniversary, is_marlborough_anniversary, is_canterbury_anniversary, is_provincial
 from server import app, calculate_period
 from datetime import date
 import json
@@ -111,6 +111,8 @@ class TestPopulateDates(unittest.TestCase):
         self.assertEqual(is_canterbury_anniversary(date(2018, 11, 16)), {'canterbury_anniversary': True})
         self.assertEqual(is_canterbury_anniversary(date(2019, 11, 15)), {'canterbury_anniversary': True})
         self.assertEqual(is_canterbury_anniversary(date(2019, 11, 14)), None)
+
+        self.assertEqual(is_provincial(date(2019, 12, 2)), {'chatham_islands_anniversary': True, 'westland_anniversary': True})
 
 
     def test_query(self):
