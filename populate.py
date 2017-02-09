@@ -67,8 +67,8 @@ def populate(cur):
 def is_provincial(current_date):
     pronvicial_dates = {
         'wellington_anniversary': (1, 25),
-        'auckland_anniversary': (2, 1),
-        'nelson_anniversary': (2, 1),
+        'auckland_anniversary': (1, 30),
+        'nelson_anniversary': (1, 30),
         'taranaki_anniversary': (3, 14),
         'otago_anniversary': (3, 21),
         'southland_anniversary': (3, 29),

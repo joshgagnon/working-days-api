@@ -68,7 +68,6 @@ def calculate_period(cur, args):
             units = 'weeks'
             amount *= 2
         cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", (target, '%s %s' % (amount, units), flags, direction == 'positive'))
-    print cur.query
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
