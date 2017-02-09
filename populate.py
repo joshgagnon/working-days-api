@@ -42,6 +42,15 @@ def monday_ize(d):
         return next_weekday(d, 0)
     return d
 
+def closest_monday(d):
+    if d.weekday() == 0:
+        return d
+    if d.weekday() <= 3:
+        return d - timedelta(d.weekday())
+    else:
+        return d + timedelta(7 - d.weekday())
+
+
 
 def get_connection():
     conn = psycopg2.connect(database=DB, user=DB_USER, password=DB_PASSWORD)
@@ -66,25 +75,120 @@ def populate(cur):
 
 def is_provincial(current_date):
     pronvicial_dates = {
-        'wellington_anniversary': (1, 25),
-        'auckland_anniversary': (1, 30),
-        'nelson_anniversary': (1, 30),
-        'taranaki_anniversary': (3, 14),
-        'otago_anniversary': (3, 21),
-        'southland_anniversary': (3, 29),
-        'south_canterbury_anniversary': (9, 26),
-        'hawkes_bay_anniversary': (10, 21),
-        'marlborough_anniversary': (10, 31),
-        'canterbury_anniversary': (11, 11),
-        'westland_anniversary': (11, 28),
-        'chatham_islands_anniversary': (11, 28)
+        'wellington_anniversary': is_wellington_anniversary,
+        'auckland_anniversary': is_auckland_anniversary,
+        'nelson_anniversary': is_nelson_anniversary,
+        'taranaki_anniversary': is_taranaki_anniversary,
+        'otago_anniversary': is_otago_anniversary,
+        'southland_anniversary': is_southland_anniversary,
+        'south_canterbury_anniversary': is_south_canterbury_anniversary,
+        'hawkes_bay_anniversary': is_hawkes_bay_anniversary,
+        'marlborough_anniversary': is_marlborough_anniversary,
+        'canterbury_anniversary': is_canterbury_anniversary,
+        'westland_anniversary': is_westland_anniversary,
+        'chatham_islands_anniversary': is_chatham_islands_anniversary
     }
     result = None
-    for p in pronvicial_dates.keys():
-        if pronvicial_dates[p][0] == current_date.month and pronvicial_dates[p][1] == current_date.day:
-            result = result or {}
-            result[p] = True
+    #for p in pronvicial_dates.keys():
+    #    if pronvicial_dates[p][0] == current_date.month and pronvicial_dates[p][1] == current_date.day:
+    #        result = result or {}
+    #        result[p] = True
     return result
+
+
+def is_wellington_anniversary(current_date):
+    """ Wellington Anniversary Day is actually the 22nd of January but it is observed on the Monday closest to that date.
+    Wellington Anniversary applies to the Wellington Province which includes Wellington, Whanganui,
+    Palmerston North, Kapiti, Feilding, Levin and Masterton."""
+    official_day =  date(current_date.year, 1, 22)
+    if current_date == closest_monday(official_day):
+        return {'wellington_anniversary': True}
+
+
+def is_auckland_anniversary(current_date):
+    """ Taranaki Anniversary Day is actually the 31st of March but it is observed on the second Monday of March.
+    Taranaki Anniversary applies to the Taranaki Region which includes Inglewood, Waitara, Hawera, Stratford, and Eltham."""
+    official_day = date(current_date.year, 1, 29)
+    if current_date == closest_monday(official_day):
+        return {'auckland_anniversary': True}
+
+
+def is_nelson_anniversary(current_date):
+    """ Nelson Anniversary Day is actually the 1st of February but it is observed on the Monday closest to that date."""
+    official_day = date(current_date.year, 2, 1)
+    if current_date == closest_monday(official_day):
+        return {'nelson_anniversary': True}
+
+
+def is_otago_anniversary(current_date):
+    """ Otago Anniversary Day is actually the 23rd of March but it is observed on the Monday closest to that date. """
+    official_day = date(current_date.year, 3, 23)
+    if current_date == closest_monday(official_day):
+        return {'otago_anniversary': True}
+
+
+def is_westland_anniversary(current_date):
+    """ Westland Anniversary Day is actually the 1st of December but it is observed on the Monday closest to that date. This date can vary outside of Greymouth."""
+    official_day = date(current_date.year, 12, 1)
+    if current_date == closest_monday(official_day):
+        return {'westland_anniversary': True}
+
+def is_chatham_islands_anniversary(current_date):
+    """ Chatham Islands Anniversary Day is actually the 30th of November but it is observed on the Monday closest to that date."""
+    official_day = date(current_date.year, 11, 30)
+    if current_date == closest_monday(official_day):
+        return {'chatham_islands_anniversary': True}
+
+def is_taranaki_anniversary(current_date):
+    """ Taranaki Anniversary Day is actually the 31st of March but it is observed on the second Monday of March.
+    Taranaki Anniversary applies to the Taranaki Region which includes Inglewood, Waitara, Hawera, Stratford, and Eltham."""
+    if current_date.month == 3 and current_date.weekday() == 0 and 8 <= current_date.day and current_date.day < 16:
+        return {'taranaki_anniversary': True}
+
+
+def is_southland_anniversary(current_date):
+    easter_date = easter.easter(current_date.year)
+    easter_tuesday = easter_date + timedelta(2)
+    if current_date == easter_tuesday:
+        return {'southland_anniversary': True}
+
+
+def is_south_canterbury_anniversary(current_date):
+    """ South Canterbury Anniversary Day is actually the 16th of December but it is observed on the fourth Monday in September.
+    This is also Dominion Day which is the anniversary of New Zealand being granted Dominion status within the British Empire (1907). """
+    if current_date.month == 9 and current_date.weekday() == 0 and 22 <= current_date.day and current_date.day < 28:
+        return {'south_canterbury_anniversary': True}
+
+
+def is_hawkes_bay_anniversary(current_date):
+    """ Hawke's Bay Anniversary Day is actually the 1st of November but it is observed on the Friday before Labour Day. """
+    """ (labour day is the fourth monday in october ) """
+    labour_day = date(current_date.year, 10, 22)
+    while labour_day.weekday() != 0:
+        labour_day += timedelta(1)
+
+    if (labour_day - timedelta(3)) == current_date:
+        return {'hawkes_bay_anniversary': True}
+
+
+def is_marlborough_anniversary(current_date):
+    """ Marlborough Anniversary Day is actually the 1st of November but it is observed on the first Monday after Labour Day. """
+    labour_day = date(current_date.year, 10, 22)
+    while labour_day.weekday() != 0:
+        labour_day += timedelta(1)
+
+    if (labour_day + timedelta(7)) == current_date:
+        return {'marlborough_anniversary': True}
+
+def is_canterbury_anniversary(current_date):
+    """ Canterbury Anniversary Day is actually the 16th of December but it is observed on the second Friday after the first Tuesday in November.
+    This is also Christchurch Show Day. Canterbury Anniversary applies to the North and Central Canterbury Regions which include Christchurch and Ashburton. """
+    first_tuesday = date(current_date.year, 11, 1)
+    while first_tuesday.weekday() != 1:
+        first_tuesday += timedelta(1)
+    anniversary = first_tuesday + timedelta(10)
+    if anniversary == current_date:
+        return {'canterbury_anniversary': True}
 
 
 def is_waitangi(current_date):
@@ -138,7 +242,6 @@ def is_xmas_ending_10th_holiday(current_date):
     if (current_date.month == 12 and current_date.day >= 20) or \
         (current_date.month == 1 and current_date.day <= 10):
         return {'xmas_starting_20th_ending_10th': True}
-
 
 
 def is_xmas_ending_2nd_holiday(current_date):
