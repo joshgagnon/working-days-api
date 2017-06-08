@@ -47,6 +47,10 @@ SCHEME_FLAGS = {
     'resource_management': resource_management
 }
 
+ROUND_DOWN = {
+    'agreement_sale_purchase_real_estate': True
+}
+
 
 def calculate_period(cur, args):
     start_date = args['start_date']
@@ -67,7 +71,12 @@ def calculate_period(cur, args):
         if units == 'fortnights':
             units = 'weeks'
             amount *= 2
-        cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", (target, '%s %s' % (amount, units), flags, direction == 'positive'))
+        params = (target, '%s %s' % (amount, units), flags, direction == 'positive')
+        if ROUND_DOWN.get(scheme):
+            cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s)""", params)
+        else:
+            cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", params)
+
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()

@@ -28,6 +28,8 @@ class TestPopulateDates(unittest.TestCase):
         self.assertEqual(result['xmas_ending_2nd'], True)
 
 
+
+
     def test_regional(self):
         self.assertEqual(is_auckland_anniversary(date(2017, 1, 29)), None)
         self.assertEqual(is_auckland_anniversary(date(2017, 1, 30)), {'auckland_anniversary': True})
@@ -114,6 +116,34 @@ class TestPopulateDates(unittest.TestCase):
 
         self.assertEqual(is_provincial(date(2019, 12, 2)), {'chatham_islands_anniversary': True, 'westland_anniversary': True})
 
+    def test_agreement_for_sale(self):
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2017-06-08',
+                               'amount': 1,
+                               'units': 'months',
+                               'direction': 'positive',
+                               'region': 'auckland',
+                               'scheme': 'agreement_sale_purchase_real_estate'})['result'], '2017-07-07')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2017-07-07',
+                               'amount': 1,
+                               'units': 'months',
+                               'direction': 'negative',
+                               'region': 'auckland',
+                               'scheme': 'agreement_sale_purchase_real_estate'})['result'], '2017-06-07')
+
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2017-06-02',
+                               'amount': 1,
+                               'units': 'day',
+                               'direction': 'positive',
+                               'region': 'auckland',
+                               'scheme': 'agreement_sale_purchase_real_estate'})['result'], '2017-06-06')
+
+
+
+
 
     def test_query(self):
         self.assertEqual(calculate_period(self.cur, {
@@ -122,6 +152,7 @@ class TestPopulateDates(unittest.TestCase):
                                'units': 'working_days',
                                'direction': 'positive',
                                'scheme': 'high_court'})['result'], '2016-01-27')
+
         self.assertEqual(calculate_period(self.cur, {
                                'start_date': '2001-10-1',
                                'amount': 10,
