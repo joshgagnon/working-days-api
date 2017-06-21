@@ -8,7 +8,7 @@ setup(name='working-days-api',
       author_email='josh.n.gagnon@gmail.com',
       license='MIT',
       install_requires=[
-          'flask',
+          'Flask',
           'flask-cors',
           'psycopg2',
           'python-dateutil'
