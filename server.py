@@ -109,8 +109,7 @@ def get_holdiays():
     try:
         with g.db.cursor() as cur:
             return jsonify(get_holidays(cur)), 200
-    except Exception, e:
-        print e
+    except Exception as e:
         abort(400)
 
 @app.route("/")
@@ -120,8 +119,7 @@ def working_days():
     try:
         with g.db.cursor() as cur:
             return jsonify(calculate_period(cur, request.args)), 200
-    except Exception, e:
-        print e
+    except Exception as e:
         abort(400)
 
 

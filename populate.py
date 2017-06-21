@@ -334,5 +334,5 @@ if __name__ == "__main__":
             populate(cur)
         conn.commit()
         conn.close()
-    except psycopg2.Error, e:
+    except psycopg2.Error as e:
         print(e)

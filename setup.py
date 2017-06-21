@@ -7,7 +7,6 @@ setup(name='working-days-api',
       author='Joshua Gagnon',
       author_email='josh.n.gagnon@gmail.com',
       license='MIT',
-     # packages=['template-law-odf'],
       install_requires=[
           'flask',
           'flask-cors',
