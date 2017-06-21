@@ -9,7 +9,7 @@ python:
 addons:
   postgresql: "9.5"
 before_install:
-  - psql -c 'create database working-days;' -U postgres
+  - psql -c 'create database "working-days";' -U postgres
 install: "pip install -r requirements.txt"
 script:
   - python test.py
