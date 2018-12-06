@@ -246,7 +246,7 @@ def is_xmas_ending_10th_holiday(current_date):
 def is_xmas_ending_2nd_holiday(current_date):
     start = date(current_date.year, 12, 25)
     end = date(current_date.year, 1, 2)
-    jan_first = end = date(current_date.year, 1, 1)
+    jan_first =  date(current_date.year, 1, 1)
     # if friday, next monday
     if jan_first.weekday() == 4:
          end = end + timedelta(3)

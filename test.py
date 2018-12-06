@@ -258,6 +258,12 @@ class TestPopulateDates(unittest.TestCase):
                                'direction': 'positive',
                                'scheme': 'companies'})['result'], '2017-01-24')
 
+        self.assertEqual(calculate_period(self.cur, {
+                               'start_date': '2018-12-06',
+                               'amount': 40,
+                               'units': 'working_days',
+                               'direction': 'positive',
+                               'scheme': 'interpretation'})['result'], '2019-02-12')
 
 if __name__ == '__main__':
     unittest.main()
