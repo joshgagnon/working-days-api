@@ -221,7 +221,7 @@ def is_xmas(current_date):
     if current_date.month == 1 and current_date.day == 1:
         return {'new_year': True}
 
-    if current_date.month == 1 and current_date.day == 1:
+    if current_date.month == 1 and current_date.day == 2:
         return {'second_jan': True}
 
 
