@@ -44,6 +44,7 @@ SCHEME_FLAGS = {
     'personal_property': personal_property,
     'personal_property_special': personal_property_special,
     'land_transfer': land_transfer,
+     'land_transfer_2017': land_transfer_2017,
     'agreement_sale_purchase_real_estate': agreement_sale_purchase_real_estate,
     'resource_management': resource_management
 }
