@@ -267,7 +267,7 @@ def is_queens_bday(current_date):
 
 def is_labour(current_date):
     # 4th monday in october
-    if current_date.month == 10 and current_date.weekday() == 0 and 22 <= current_date.day and current_date.day < 28 :
+    if current_date.month == 10 and current_date.weekday() == 0 and 22 <= current_date.day and current_date.day <= 28 :
         return {'labour': True}
     return None
 
