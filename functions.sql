@@ -72,6 +72,39 @@ CREATE OR REPLACE FUNCTION day_offset_round_down(start date, interval, flags tex
     $$ LANGUAGE SQL;
 
 
+CREATE OR REPLACE FUNCTION day_offset_calendar_end(start date, interval, flags text[], forward boolean default true)
+    RETURNS JSON
+    AS $$
+    SELECT json_build_object('result', day,
+                             'stats', (CASE forward WHEN true THEN stats_json($1, day, $3) ELSE stats_json(day, $1, $3) END),
+                             'range', (CASE forward WHEN true THEN holiday_range_json($1, day, $3) ELSE holiday_range_json(day, $1, $3) END)
+                             )
+    FROM (
+        SELECT day FROM holidays
+            WHERE ((forward and day >= (start + $2)) or (not forward and day <= start - $2)) AND (NOT start = day)
+            ORDER BY CASE forward WHEN true THEN day END asc, CASE forward WHEN false THEN day END desc
+            LIMIT 1 ) q
+    $$ LANGUAGE SQL;
+
+
+CREATE OR REPLACE FUNCTION day_offset_round_down_calendar_end(start date, interval, flags text[], forward boolean default true)
+    RETURNS JSON
+    AS $$
+    SELECT CASE WHEN (day > $1 AND $4) OR (day <= $1 AND NOT $4) THEN json_build_object('result', day,
+                             'stats', (CASE forward WHEN true THEN stats_json($1, day, $3) ELSE stats_json(day, $1, $3) END),
+                             'range', (CASE forward WHEN true THEN holiday_range_json($1, day, $3) ELSE holiday_range_json(day, $1, $3) END)
+                             )
+                WHEN (day <= $1 AND $4) OR (day > $1 AND NOT $4) THEN day_offset($1, $2, $3, $4)
+                END
+
+    FROM (
+        SELECT day FROM holidays
+            WHERE ((forward and day <= (start + $2)) or (not forward and day <= start - $2)) AND (NOT start = day)
+            ORDER BY day desc
+            LIMIT 1 ) q
+    $$ LANGUAGE SQL;
+
+
 CREATE OR REPLACE FUNCTION working_day_offset(start date, count integer, flags text[], forward boolean default true)
     RETURNS JSON
     AS $$

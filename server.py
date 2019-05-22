@@ -64,8 +64,7 @@ def calculate_period(cur, args):
     direction = args.get('direction', 'positive')
     if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
         flags.append(args['region'])
-    if args.get('mode') == 'calendar_days':
-        flags = []
+
     target = datetime.strptime(start_date, "%Y-%m-%d").date()
 
     target += relativedelta(days=offset)
@@ -76,10 +75,18 @@ def calculate_period(cur, args):
             units = 'weeks'
             amount *= 2
         params = (target, '%s %s' % (amount, units), flags, direction == 'positive')
-        if ROUND_DOWN.get(scheme):
-            cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s)""", params)
+        if args.get('mode') == 'calendar_days':
+            if ROUND_DOWN.get(scheme):
+                cur.execute("""SELECT day_offset_round_down_calendar_end(%s, %s::interval, %s::text[], %s)""", params)
+            else:
+                cur.execute("""SELECT day_offset_calendar_end(%s, %s::interval, %s::text[], %s)""", params)
+
         else:
-            cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", params)
+
+            if ROUND_DOWN.get(scheme):
+                cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s)""", params)
+            else:
+                cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", params)
 
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
