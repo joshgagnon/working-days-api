@@ -64,7 +64,7 @@ def calculate_period(cur, args):
     direction = args.get('direction', 'positive')
     if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
         flags.append(args['region'])
-    if args.get('calendar_days'):
+    if args.get('mode') == 'calendar_days':
         flags = []
     target = datetime.strptime(start_date, "%Y-%m-%d").date()
 
