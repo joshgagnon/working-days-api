@@ -67,8 +67,8 @@ def calculate_period(cur, args):
     direction = args.get('direction', 'positive')
     if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
         flags.append(args['region'])
-    if args.get('mode') == 'calendar_days':
-        flags = []
+    calendar_days = args.get('mode') == 'calendar_days'
+
     target = datetime.strptime(start_date, "%Y-%m-%d").date()
 
     target += relativedelta(days=offset)
@@ -78,22 +78,22 @@ def calculate_period(cur, args):
         if units == 'fortnights':
             units = 'weeks'
             amount *= 2
-        params = (target, '%s %s' % (amount, units), flags, direction == 'positive')
+        params = (target, '%s %s' % (amount, units), flags, direction == 'positive', calendar_days)
         if ROUND_DOWN.get(scheme):
-            cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s)""", params)
+            cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s, %s)""", params)
         else:
-            cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", params)
+            cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s, %s)""", params)
 
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
 
     if flank > 0:
-        query = """SELECT day_offset(%s, '%s days', %s::text[], %s) """;
+        query = """SELECT day_offset(%s, '%s days', %s::text[], %s, false) """;
         cur.execute(query, [start_date, flank, flags, False])
-        before_range = cur.fetchone()[0]['range']
+        before_range = cur.fetchone()[0]['range'] or []
         cur.execute(query, [end_date, flank, flags, True])
-        after_range = cur.fetchone()[0]['range']
+        after_range = cur.fetchone()[0]['range'] or []
         if not result['range']:
             result['range'] = []
         flank_map = lambda x: dict({'flank': True}, **x)
@@ -141,7 +141,7 @@ def working_days():
         with g.db.cursor() as cur:
             return jsonify(calculate_period(cur, request.args)), 200
     except Exception as e:
-        app.logger.info(e)
+        app.logger.error(e)
         abort(400)
 
 
