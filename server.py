@@ -94,10 +94,11 @@ def calculate_period(cur, args):
         before_range = cur.fetchone()[0]['range']
         cur.execute(query, [end_date, flank, flags, True])
         after_range = cur.fetchone()[0]['range']
-        result['flank'] = {
-            'before': before_range,
-            'after': after_range
-        }
+        if not result['range']:
+            result['range'] = []
+        flank_map = lambda x: dict({'flank': True}, **x)
+        result['range'].extend(list(map(flank_map, before_range)))
+        result['range'].extend(list(map(flank_map, after_range)))
 
     result['days_count'] = (end_date - start_date).days
     return result
