@@ -3,8 +3,10 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from populate import get_connection
 from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
-from flask.ext.cors import CORS, cross_origin
-
+try:
+    from flask.ext.cors import CORS, cross_origin
+except:
+    from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -60,6 +62,7 @@ def calculate_period(cur, args):
     amount = int(args['amount'])
     units = args.get('units')
     scheme = args['scheme']
+    flank = int(args.get('flank', 0))
     flags = SCHEME_FLAGS.get(scheme, [])[:]
     direction = args.get('direction', 'positive')
     if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
@@ -84,6 +87,18 @@ def calculate_period(cur, args):
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+
+    if flank > 0:
+        query = """SELECT day_offset(%s, '%s days', %s::text[], %s) """;
+        cur.execute(query, [start_date, flank, flags, False])
+        before_range = cur.fetchone()[0]['range']
+        cur.execute(query, [end_date, flank, flags, True])
+        after_range = cur.fetchone()[0]['range']
+        result['flank'] = {
+            'before': before_range,
+            'after': after_range
+        }
+
     result['days_count'] = (end_date - start_date).days
     return result
 
@@ -121,9 +136,11 @@ def get_holdiays():
 @cross_origin()
 def working_days():
     try:
+        #app.logger.error('hi')
         with g.db.cursor() as cur:
             return jsonify(calculate_period(cur, request.args)), 200
     except Exception as e:
+        app.logger.info(e)
         abort(400)
 
 
