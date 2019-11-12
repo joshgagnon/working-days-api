@@ -3,8 +3,10 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from populate import get_connection
 from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
-from flask.ext.cors import CORS, cross_origin
-
+try:
+    from flask.ext.cors import CORS, cross_origin
+except:
+    from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -60,10 +62,12 @@ def calculate_period(cur, args):
     amount = int(args['amount'])
     units = args.get('units')
     scheme = args['scheme']
+    flank = int(args.get('flank', 0))
     flags = SCHEME_FLAGS.get(scheme, [])[:]
     direction = args.get('direction', 'positive')
     if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
         flags.append(args['region'])
+    calendar_days = args.get('mode') == 'calendar_days'
 
     target = datetime.strptime(start_date, "%Y-%m-%d").date()
 
@@ -74,23 +78,28 @@ def calculate_period(cur, args):
         if units == 'fortnights':
             units = 'weeks'
             amount *= 2
-        params = (target, '%s %s' % (amount, units), flags, direction == 'positive')
-        if args.get('mode') == 'calendar_days':
-            if ROUND_DOWN.get(scheme):
-                cur.execute("""SELECT day_offset_round_down_calendar_end(%s, %s::interval, %s::text[], %s)""", params)
-            else:
-                cur.execute("""SELECT day_offset_calendar_end(%s, %s::interval, %s::text[], %s)""", params)
-
+        params = (target, '%s %s' % (amount, units), flags, direction == 'positive', calendar_days)
+        if ROUND_DOWN.get(scheme):
+            cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s, %s)""", params)
         else:
-
-            if ROUND_DOWN.get(scheme):
-                cur.execute("""SELECT day_offset_round_down(%s, %s::interval, %s::text[], %s)""", params)
-            else:
-                cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s)""", params)
+            cur.execute("""SELECT day_offset(%s, %s::interval, %s::text[], %s, %s)""", params)
 
     result = cur.fetchone()[0]
     end_date = datetime.strptime(result['result'], "%Y-%m-%d").date()
     start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+
+    if flank > 0:
+        query = """SELECT day_offset(%s, '%s days', %s::text[], %s, false) """;
+        cur.execute(query, [start_date, flank, flags, False])
+        before_range = cur.fetchone()[0]['range'] or []
+        cur.execute(query, [end_date, flank, flags, True])
+        after_range = cur.fetchone()[0]['range'] or []
+        if not result['range']:
+            result['range'] = []
+        flank_map = lambda x: dict({'flank': True}, **x)
+        result['range'].extend(list(map(flank_map, before_range)))
+        result['range'].extend(list(map(flank_map, after_range)))
+
     result['days_count'] = (end_date - start_date).days
     return result
 
@@ -128,9 +137,11 @@ def get_holdiays():
 @cross_origin()
 def working_days():
     try:
+        #app.logger.error('hi')
         with g.db.cursor() as cur:
             return jsonify(calculate_period(cur, request.args)), 200
     except Exception as e:
+        app.logger.error(e)
         abort(400)
 
 
