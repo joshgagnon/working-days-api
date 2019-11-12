@@ -17,6 +17,11 @@ CREATE OR REPLACE FUNCTION stats(start_date date, end_date date)
     GROUP BY flag
     $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION is_working_day(date, flags text[])
+    RETURNS boolean
+    AS $$
+    SELECT EXISTS(SELECT 1 FROM holidays WHERE day = $1 and NOT (flags ?| $2) )
+    $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION holiday_range_json(start_date date, end_date date, flags text[])
     RETURNS JSON

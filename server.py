@@ -103,6 +103,17 @@ def calculate_period(cur, args):
     result['days_count'] = (end_date - start_date).days
     return result
 
+def is_working_day(cur, args):
+    date = args['date']
+    scheme = args['scheme']
+    flags = SCHEME_FLAGS.get(scheme, [])[:]
+    if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
+        flags.append(args['region'])
+    params = (date, flags)
+    cur.execute("""SELECT is_working_day(%s, %s::text[])""", params)
+    return {'is_working_day': cur.fetchone()[0]}
+
+
 def get_holidays(cur):
     cur.execute("""SELECT get_holidays() as holidays """)
     return {'holidays': cur.fetchone()[0]}
@@ -130,6 +141,17 @@ def get_holdiays():
         with g.db.cursor() as cur:
             return jsonify(get_holidays(cur)), 200
     except Exception as e:
+        abort(400)
+
+
+@app.route("/is_working_day")
+@cross_origin()
+def get_is_working_day():
+    try:
+        with g.db.cursor() as cur:
+            return jsonify(is_working_day(cur, request.args)), 200
+    except Exception as e:
+        app.logger.error(e)
         abort(400)
 
 @app.route("/")
