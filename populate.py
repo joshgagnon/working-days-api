@@ -249,7 +249,7 @@ def is_xmas_ending_2nd_holiday(current_date):
     jan_first =  date(current_date.year, 1, 1)
     # if friday, next monday
     if jan_first.weekday() == 4:
-         end = end + timedelta(3)
+        end = next_weekday(end, 0)
     # if sat or sun, then next tuesday
     if 5 <= jan_first.weekday() <= 6:
         end = next_weekday(end, 1)
