@@ -48,7 +48,8 @@ SCHEME_FLAGS = {
     'land_transfer': land_transfer,
      'land_transfer_2017': land_transfer_2017,
     'agreement_sale_purchase_real_estate': agreement_sale_purchase_real_estate,
-    'resource_management': resource_management
+    'resource_management': resource_management,
+    'offical_information_act': judicature_holiday
 }
 
 ROUND_DOWN = {
