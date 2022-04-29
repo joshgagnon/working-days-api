@@ -271,6 +271,45 @@ def is_labour(current_date):
         return {'labour': True}
     return None
 
+def is_matariki(current_date):
+    dates = [
+    "2022 24 June",
+    "2023 14 July",
+    "2024 28 June",
+    "2025 20 June",
+    "2026 10 July",
+    "2027 25 June",
+    "2028 14 July",
+    "2029 6 July",
+    "2030 21 June",
+    "2031 11 July",
+    "2032 2 July",
+    "2033 24 June",
+    "2034 7 July",
+    "2035 29 June",
+    "2036 21 July",
+    "2037 10 July",
+    "2038 25 June",
+    "2039 15 July",
+    "2040 6 July",
+    "2041 19 July",
+    "2042 11 July",
+    "2043 3 July",
+    "2044 24 June",
+    "2045 7 July",
+    "2046 29 June",
+    "2047 19 July",
+    "2048 3 July",
+    "2049 25 June",
+    "2050 15 July",
+    "2051 30 June",
+    "2052 21 June"
+    ]
+    string_date = current_date.strftime('%Y %-d %B')
+    if  string_date in dates :
+        return {'matariki': True}
+    return None
+
 
 nz_holidays = {
     'waitangi': is_waitangi,
@@ -282,7 +321,8 @@ nz_holidays = {
     'xmas_ending_15th': is_xmas_ending_15th_holiday,
     'xmas_ending_5th': is_xmas_ending_5th_holiday,
     'xmas_starting_20th_ending_10th': is_xmas_ending_10th_holiday,
-    'pronvincial': is_provincial
+    'pronvincial': is_provincial,
+    'matariki' : is_matariki
 }
 
 
