@@ -15,7 +15,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 judicature_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 judicature_holiday_no_mondayize = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-appeal_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+appeal_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi','waitangi_mondayized', 'anzac', 'anzac_mondayized', 'queens_bday', 'labour']
 supreme_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour', 'wellington_anniversary']
 interpretation_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 companies_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
