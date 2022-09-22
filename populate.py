@@ -310,6 +310,10 @@ def is_matariki(current_date):
         return {'matariki': True}
     return None
 
+def is_queen_memorial(current_date):
+    if current_date == date(2022, 9, 26):
+        return {'queen_memorial': True}
+    return None
 
 nz_holidays = {
     'waitangi': is_waitangi,
@@ -322,7 +326,8 @@ nz_holidays = {
     'xmas_ending_5th': is_xmas_ending_5th_holiday,
     'xmas_starting_20th_ending_10th': is_xmas_ending_10th_holiday,
     'pronvincial': is_provincial,
-    'matariki' : is_matariki
+    'matariki' : is_matariki,
+    'queen_memorial' : is_queen_memorial
 }
 
 

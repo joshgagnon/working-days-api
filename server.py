@@ -13,22 +13,22 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-judicature_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-judicature_holiday_no_mondayize = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-appeal_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi','waitangi_mondayized', 'anzac', 'anzac_mondayized', 'queens_bday', 'labour']
-supreme_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour', 'wellington_anniversary']
-interpretation_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-companies_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-property_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-agreement_sale_purchase_real_estate = ['weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-income_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-goods_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-credit_holiday = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-personal_property = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-personal_property_special = ['weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-land_transfer = ['matariki', 'weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-land_transfer_2017 = ['matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-resource_management = ['matariki', 'weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+judicature_holiday = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+judicature_holiday_no_mondayize = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
+appeal_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi','waitangi_mondayized', 'anzac', 'anzac_mondayized', 'queens_bday', 'labour']
+supreme_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour', 'wellington_anniversary']
+interpretation_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+companies_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+property_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+agreement_sale_purchase_real_estate = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+income_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+goods_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+credit_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+personal_property = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+personal_property_special = ['queen_memorial','weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+land_transfer = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+land_transfer_2017 = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+resource_management = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
 
 SCHEME_FLAGS = {
