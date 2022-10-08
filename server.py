@@ -46,7 +46,7 @@ SCHEME_FLAGS = {
     'court_of_appeal': judicature_holiday,
     'supreme_court': supreme_holiday,
     'companies': companies_holiday,
-    'legislation_holiday': legislation_holiday,
+    'legislation': legislation_holiday,
     'interpretation': interpretation_holiday,
     'property': property_holiday,
     'income': income_holiday,
