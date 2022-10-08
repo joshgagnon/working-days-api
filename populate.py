@@ -42,6 +42,12 @@ def monday_ize(d):
         return next_weekday(d, 0)
     return d
 
+def tuesday_ize(d):
+    # tuesdayization from Jan 1st 2014
+    if d >= date(2014, 1, 2) and is_weekend(d):
+        return next_weekday(d, 1)
+    return d
+
 def closest_monday(d):
     if d.weekday() == 0:
         return d
@@ -240,19 +246,36 @@ def is_xmas_ending_5th_holiday(current_date):
 
 def is_xmas_ending_2nd_holiday(current_date):
     start = date(current_date.year, 12, 25)
-    end = date(current_date.year, 1, 2)
+    end  = date(current_date.year, 1, 2)
+    if current_date >= start or current_date <= end:
+        return {'xmas_ending_2nd': True}
+
+
+def is_xmas_ending_2nd_holiday_mondayized(current_date):
+    if is_xmas_ending_2nd_holiday(current_date):
+        return
+    start = date(current_date.year, 12, 25)
+    end  = date(current_date.year, 1, 2)
     jan_first =  date(current_date.year, 1, 1)
-    key = 'xmas_ending_2nd'
     # if friday, next monday
     if jan_first.weekday() == 4:
         end = next_weekday(end, 0)
-        key = 'xmas_ending_2nd_mondayized'
+        if current_date >= start or current_date <= end:
+            return {'xmas_ending_2nd_mondayized': True}
+
+
+def is_xmas_ending_2nd_holiday_tuesdayized(current_date):
+    if is_xmas_ending_2nd_holiday(current_date):
+        return
+    start = date(current_date.year, 12, 25)
+    end  = date(current_date.year, 1, 2)
+    jan_first =  date(current_date.year, 1, 1)
     # if sat or sun, then next tuesday
     if 5 <= jan_first.weekday() <= 6:
         end = next_weekday(end, 1)
-        key = 'xmas_ending_2nd_tuesdayized'
-    if current_date >= start or current_date <= end:
-        return {key: True}
+        if current_date >= start or current_date <= end:
+            return {'xmas_ending_2nd_tuesdayized': True}
+
 
 def is_xmas_ending_10th_holiday(current_date):
     if (current_date.month == 12 and current_date.day >= 20) or \
@@ -324,6 +347,8 @@ nz_holidays = {
     'queens_bday': is_queens_bday,
     'labour': is_labour,
     'xmas_ending_2nd': is_xmas_ending_2nd_holiday,
+    'xmas_ending_2nd_mondayized': is_xmas_ending_2nd_holiday_mondayized,
+    'xmas_ending_2nd_tuesdayized': is_xmas_ending_2nd_holiday_tuesdayized,
     'xmas_ending_15th': is_xmas_ending_15th_holiday,
     'xmas_ending_5th': is_xmas_ending_5th_holiday,
     'xmas_starting_20th_ending_10th': is_xmas_ending_10th_holiday,
