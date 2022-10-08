@@ -16,12 +16,13 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 interpretation_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi','waitangi_mondayized', 'anzac',  'anzac_mondayized', 'queens_bday', 'labour']
 
 
-legislation_holiday = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+legislation_holiday = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'xmas_ending_2nd_mondayized', 'xmas_ending_2nd_tuesdayized',  'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+legislation_holiday_short_xmas = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_2nd',  'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 judicature_holiday =  ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-money_holiday =        ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+money_holiday =   ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
 companies_holiday = legislation_holiday
-property_holiday = legislation_holiday
+
 credit_holiday = legislation_holiday
 
 agreement_sale_purchase_real_estate = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
@@ -30,7 +31,8 @@ agreement_sale_purchase_real_estate_special = ['queen_memorial', 'matariki', 'we
 income_holiday = money_holiday
 goods_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
-personal_property = legislation_holiday
+property_holiday = legislation_holiday_short_xmas
+personal_property = legislation_holiday_short_xmas
 personal_property_special = money_holiday
 land_transfer_2017 = legislation_holiday
 

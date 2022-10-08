@@ -237,25 +237,27 @@ def is_xmas_ending_5th_holiday(current_date):
         return {'xmas_ending_5th': True}
 
 
-def is_xmas_ending_10th_holiday(current_date):
-    if (current_date.month == 12 and current_date.day >= 20) or \
-        (current_date.month == 1 and current_date.day <= 10):
-        return {'xmas_starting_20th_ending_10th': True}
-
 
 def is_xmas_ending_2nd_holiday(current_date):
     start = date(current_date.year, 12, 25)
     end = date(current_date.year, 1, 2)
     jan_first =  date(current_date.year, 1, 1)
+    key = 'xmas_ending_2nd'
     # if friday, next monday
     if jan_first.weekday() == 4:
         end = next_weekday(end, 0)
+        key = 'xmas_ending_2nd_mondayized'
     # if sat or sun, then next tuesday
     if 5 <= jan_first.weekday() <= 6:
         end = next_weekday(end, 1)
-
+        key = 'xmas_ending_2nd_tuesdayized'
     if current_date >= start or current_date <= end:
-        return {'xmas_ending_2nd': True}
+        return {key: True}
+
+def is_xmas_ending_10th_holiday(current_date):
+    if (current_date.month == 12 and current_date.day >= 20) or \
+        (current_date.month == 1 and current_date.day <= 10):
+        return {'xmas_starting_20th_ending_10th': True}
 
 
 def is_queens_bday(current_date):
