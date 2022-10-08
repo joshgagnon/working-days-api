@@ -38,8 +38,7 @@ land_transfer_2017 = legislation_holiday
 
 resource_management = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
-supreme_court = ['wellington_anniversary'] +  judicature_holiday
-district_court = judicature_holiday
+supreme_holiday = ['wellington_anniversary'] +  judicature_holiday
 
 SCHEME_FLAGS = {
     'district_court': judicature_holiday,
