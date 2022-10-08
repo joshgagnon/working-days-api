@@ -12,32 +12,40 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+#delete
+interpretation_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi','waitangi_mondayized', 'anzac',  'anzac_mondayized', 'queens_bday', 'labour']
 
-judicature_holiday = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-judicature_holiday_no_mondayize = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour']
-appeal_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi','waitangi_mondayized', 'anzac', 'anzac_mondayized', 'queens_bday', 'labour']
-supreme_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'queens_bday', 'labour', 'wellington_anniversary']
-interpretation_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-companies_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-property_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+
+legislation_holiday = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+judicature_holiday =  ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+money_holiday =        ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+
+companies_holiday = legislation_holiday
+property_holiday = legislation_holiday
+credit_holiday = legislation_holiday
+
 agreement_sale_purchase_real_estate = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_eve', 'xmas_ending_5th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-income_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+agreement_sale_purchase_real_estate_special = ['queen_memorial', 'matariki', 'weekend', 'easter', 'xmas_eve', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+
+income_holiday = money_holiday
 goods_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-credit_holiday = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-personal_property = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-personal_property_special = ['queen_memorial','weekend', 'easter', 'xmas_ending_15th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-land_transfer = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas', 'boxing', 'new_years', 'second_jan', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
-land_transfer_2017 = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_ending_2nd', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
+
+personal_property = legislation_holiday
+personal_property_special = money_holiday
+land_transfer_2017 = legislation_holiday
+
 resource_management = ['queen_memorial','matariki', 'weekend', 'easter', 'xmas_starting_20th_ending_10th', 'waitangi', 'anzac', 'waitangi_mondayized', 'anzac_mondayized', 'queens_bday', 'labour']
 
+supreme_court = ['wellington_anniversary'] +  judicature_holiday
+district_court = judicature_holiday
 
 SCHEME_FLAGS = {
     'district_court': judicature_holiday,
     'high_court': judicature_holiday,
-    'high_court_special': judicature_holiday_no_mondayize,
-    'court_of_appeal': appeal_holiday,
+    'court_of_appeal': judicature_holiday,
     'supreme_court': supreme_holiday,
     'companies': companies_holiday,
+    'legislation_holiday': legislation_holiday,
     'interpretation': interpretation_holiday,
     'property': property_holiday,
     'income': income_holiday,
@@ -45,8 +53,7 @@ SCHEME_FLAGS = {
     'credit_contracts': credit_holiday,
     'personal_property': personal_property,
     'personal_property_special': personal_property_special,
-    'land_transfer': land_transfer,
-     'land_transfer_2017': land_transfer_2017,
+    'land_transfer_2017': land_transfer_2017,
     'agreement_sale_purchase_real_estate': agreement_sale_purchase_real_estate,
     'resource_management': resource_management,
     'official_information_act': judicature_holiday
@@ -66,7 +73,13 @@ def calculate_period(cur, args):
     flank = int(args.get('flank', 0))
     flags = SCHEME_FLAGS.get(scheme, [])[:]
     direction = args.get('direction', 'positive')
-    if scheme in ['property', 'land_transfer', 'agreement_sale_purchase_real_estate']:
+    if scheme in [
+        'district_court',
+       # 'supreme_court' is explicit with this one
+        'court_of_appeal'
+        'property',
+        'agreement_sale_purchase_real_estate'
+        ]:
         flags.append(args['region'])
     calendar_days = args.get('mode') == 'calendar_days'
 
